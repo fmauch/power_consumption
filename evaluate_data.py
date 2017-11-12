@@ -29,8 +29,8 @@ def plot_time_based(time_data, data):
     xfmt = md.DateFormatter('%Y-%m-%d %H:%M')
     ax.xaxis.set_major_formatter(xfmt)
     plt.plot(time_data, data)
-    plt.ylabel('Wirkleistung')
-    plt.title('Leistungsverlauf')
+    plt.ylabel('Power')
+    plt.title('Power consumption')
 
     plt.show()
 
@@ -53,14 +53,10 @@ def main():
 
     powers = voltages * currents * cos_phi
 
-    duplicates = [x for x, cnt in Counter(timestamps).iteritems() if cnt > 1]
-    print(duplicates)
-
-
     power_average = np.mean(powers)
     NANOSECS_TO_HOURS = 3600 * 1000000000
-    print('Average power consumption: {}'.format(power_average))
-    print('Time passed: {}'.format((timestamps[-1] - timestamps[0]).astype('float')/(24 * NANOSECS_TO_HOURS)))
+    print('Average power consumption: {} W'.format(power_average))
+    print('Time passed: {} h'.format((timestamps[-1] - timestamps[0]).astype('float')/(24 * NANOSECS_TO_HOURS)))
 
     energy_total = integrate.simps(powers, timestamps.astype('float') / NANOSECS_TO_HOURS) / 1000
     print('Total energy used: {} kWh'.format(energy_total))
