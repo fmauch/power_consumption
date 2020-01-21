@@ -32,7 +32,7 @@ Note that for this you will have the [el4000](https://github.com/fmauch/el4000) 
 Then place the binary files inside **somedir/device_data** and call
 
 ```
-./extract_data.csv somedir/device_data
+./extract_data.sh somedir/device_data
 ```
 
-This will create a **device_data.xml** file in the current directory.
+This will create a **device_data.csv** file in the current directory.
