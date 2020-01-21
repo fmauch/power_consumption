@@ -32,7 +32,6 @@ def plot_time_based(time_data, data):
     plt.ylabel('Power')
     plt.title('Power consumption')
 
-    plt.show()
 
 def main():
     parser = argparse.ArgumentParser(description='Evaluate logging data from el4000')
@@ -52,19 +51,23 @@ def main():
     cos_phi = consumption_data.power_factor.values
 
     powers = voltages * currents * cos_phi
+    va = voltages * currents
 
     power_average = np.mean(powers)
     NANOSECS_TO_HOURS = 3600 * 1000000000
     print('Average power consumption: {} W'.format(power_average))
-    print('Time passed: {} h'.format((timestamps[-1] - timestamps[0]).astype('float')/(24 * NANOSECS_TO_HOURS)))
+    print('Time passed: {} days'.format((timestamps[-1] - timestamps[0]).astype('float')/(24 * NANOSECS_TO_HOURS)))
 
-    energy_total = integrate.simps(powers, timestamps.astype('float') / NANOSECS_TO_HOURS) / 1000
+    print(timestamps.astype('float')[0:4] / (60*1000000000) )
+    energy_total = integrate.simps(powers, timestamps.astype('float') / (1000 * NANOSECS_TO_HOURS))
     print('Total energy used: {} kWh'.format(energy_total))
 
     print('Estimated energy consumption in one year: {} kWh'.format(power_average * 365.25 * 24 / 1000))
     print('Estimated annual costs: {} EUR'.format((power_average * 365.25 * 24 / 1000) * COSTS_PER_KWH))
 
     plot_time_based(timestamps, powers)
+    # plot_time_based(timestamps, va)
+    plt.show()
 
 
 if __name__ == "__main__":
